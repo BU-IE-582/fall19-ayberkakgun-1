@@ -35,9 +35,9 @@ r<-img[1:512,1:512,1]
 g<-img[1:512,1:512,2]
 b<-img[1:512,1:512,3]
 par(mfrow=c(1,3))
-EBImage::image(r,col="red")
-raster::image(g,col="green")
-image(b,col="blue")
+EBImage::image(r,col=grey.colors(50))
+raster::image(g,col=grey.colors(50))
+image(b,col=grey.colors(50))
 ```
 
 For each channel, we take the average of the columns with "colMeans" and plot the average as a line for each channel.
