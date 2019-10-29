@@ -16,7 +16,7 @@ library(EBImage)
 First we read the image and check the structure and dimensions.
 
 ```{r function plot }
-img <- readJPEG("/Users/ayberkakgun/Desktop/doku5.jpeg")
+img <- readJPEG("/Users/ayberkakgun/Desktop/doku5.jpg")
 str(img)
 dim(img)
 ```
@@ -35,9 +35,9 @@ r<-img[1:512,1:512,1]
 g<-img[1:512,1:512,2]
 b<-img[1:512,1:512,3]
 par(mfrow=c(1,3))
-EBImage::image(r,col=grey.colors(50))
-raster::image(g,col=grey.colors(50))
-image(b,col=grey.colors(50))
+EBImage::image(r,col="red")
+raster::image(g,col="green")
+image(b,col="blue")
 ```
 
 For each channel, we take the average of the columns with "colMeans" and plot the average as a line for each channel.
@@ -102,19 +102,19 @@ rasterImage(img_med3, 0, 0, 512, 512)
 
 ##PART 2
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(imager)
 library(gmodels)
 library(magrittr)
-plot(c(0, 512), c(0, 512), type = "n", xlab = "", ylab = "")
-rasterImage(img, 0, 0, 512, 512)
+img <- load.image("/Users/ayberkakgun/Desktop/doku5.jpg")
+plot(img)
 ```
 
 
 ###2.1
 At first, we transformed the image to a grayscale
 ```{r}
-gray=grayscale(img)
+gray<-grayscale(img)
 gray %>% plot
 ```
 
