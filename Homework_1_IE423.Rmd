@@ -1,6 +1,6 @@
 ---
 title: 'IE 423, Project Part 1'
-author: "Ayberk AKGUN, Irem YAZGAN"
+author: "Ayberk AKGUN, Berkay ALTINEL, Gülce KARABACAK, Irem YAZGAN, Alperen YILDIZ"
 date: "10/28/2019"
 output: html_document
 ---
