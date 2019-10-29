@@ -9,4 +9,4 @@ We are the Group 0. Our group members are:
 
 ## Project Part 1
 
-[Here](Homework_1_IE423.html) is our Project Part 1.
+[Part1](Homework_1_IE423.html) is our Project Part 1.
