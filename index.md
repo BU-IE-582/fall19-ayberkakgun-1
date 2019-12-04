@@ -9,3 +9,6 @@ We are the Group 1. Our group members are:
 
 ## Project Part 1
 [Here](Homework_1_IE423.html) is our Project Part 1.
+
+## Project Part 2
+[Here](Project2-Group1.html) is our Project Part 2.
