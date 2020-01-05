@@ -12,3 +12,6 @@ We are the Group 1. Our group members are:
 
 ## Project Part 2
 [Here](Project2-Group1.html) is our Project Part 2.
+
+## Project Part 3
+[Here](IE423,ProjectPart3.html) is our Project Part 3.
