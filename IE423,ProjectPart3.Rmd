@@ -1,16 +1,18 @@
 ---
 title: "IE423,ProjectPart3"
-author: "Ayberk AKGÜN"
-date: "1/5/2020"
 output: html_document
 ---
 
 # Project Part 3
 
 Berkay ALTINEL
+
 Ayberk AKGÜN
+
 Gülce KARABACAK
+
 İrem YAZGAN
+
 Alperen YILDIZ
 
 ## 1)	Introduction
@@ -88,21 +90,31 @@ t2_chart<-mqcc(gabor_filtered_image_B, type = c("T2"), col_means_gray,
 q2 <- qcc(gabor_filtered_image_A/max(gabor_filtered_image_A), type = "xbar", confidence.level = 0.9)
 ```
 
-## 1)	Results: 
+## 4)	Results: 
 
 It can be seen that there is an abnormality around 239th pixel.
 
 With our method we can clearly see the parts of the images that have defects in control charts. We would expect homogenously distributed pixel values in charts if there were no defects. If we perform the same procedure for all the images, we get the following control charts.
+```{r xbarchartall}
+for(i in 1:20){
+sah_li<-paste0("/Users/ayberkakgun/Desktop/Images/Fabric",i)
+image_link<-paste0(sah_li,".jpg")
+img1 <- readJPEG(image_link)
+grayscaled_image<-(img1[1:512,1:512,1]+img1[1:512,1:512,2]+img1[1:512,1:512,3])/3
+a<-gabor.filter(grayscaled_image, lamda=1,bw=1,theta=0, disp=F)
+gabor_filtered_image <- a$filtered_img
+q1 <- qcc(gabor_filtered_image/max(gabor_filtered_image), type = "xbar", confidence.level = 0.9)}
+```
 
 
-## 2)	Conclusions and Future Work
+## 5)	Conclusions and Future Work
 
-#  Patches
+###  Patches
 
 This work can be further developed by dividing the pixel values to patches. Applyying the above mentioned approach to patches would result in more precise results, enables to find the locations of defects exactly and finding defects other than vertical and horizontal directions.
 
 
-# References 
+## References 
 
 1) Fabric Fault Detection Using Digital Image Processing, Farida S.Nadaf, NayanaP.Kamble, RohiniB.Gadekar, International Journal on Recent and Innovation Trends in Computing and Communication ISSN: 2321-8169 Volume: 5 Issue: 2, 2017
 2) Fabric defect detection systems and methods—A systematic literature review, Kazım Hanbaya,∗, Muhammed Fatih Talub, Ömer Faruk Özgüven, 2016.
