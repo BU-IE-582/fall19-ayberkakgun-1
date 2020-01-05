@@ -1,0 +1,108 @@
+---
+title: "IE423,ProjectPart3"
+author: "Ayberk AKGÜN"
+date: "1/5/2020"
+output: html_document
+---
+
+# Project Part 3
+
+Berkay ALTINEL
+Ayberk AKGÜN
+Gülce KARABACAK
+İrem YAZGAN
+Alperen YILDIZ
+
+## 1)	Introduction
+
+Linen is made from the cellulose fibers that grow in the flax plant. It is technically a vegetable and one of the oldest cultivated plants in human history. 
+
+Quality control is very important in textile industry, to detect fabric defections and ensure a certain quality level. It is required to monitor the processing to be able to detect the defects such as but not limited to float, pin marks, stain, slub, ladder, hole. 
+
+The traditional method has been human visual inspection for centuries. This method is prone to error and requires a lot of time and effort. It might be possible with developing technologies to automatize this process, or computerized at least, with images of the manufactured material and processing it with the appropriate control method (Nadaf, 2017).
+
+
+## 2)	Background Information
+
+Although there exists an abundant literature on detecting defects on fabric, very little of this literature focuses on linen. 
+
+A lot of research and development is being done in the field of automatic visual inspection techniques for the detection of fabric defects. Image Analysis is widely used to detect errors. Various advanced approaches have also been proposed, such as ultrasonic imaging systems and laser optics.
+
+In order to determine fabric defect in woven fabrics, Bodnarova et al. used spatial gray-level dependence matrices for better texture definition. Zhang and Bresee combined autocorrelation functions and morphological operators to detect knot and slub defects. Numerous studies on fabric error detection focus on spectral approaches. Spectral approaches primarily aim to eliminate the basics of image texture and then generalize the basics of this texture with spatial layout rules. Wavelet transform, Fourier transform, Gabor transform and filtering methods are the subheadings of spectral approaches. Malek performed real-time error detection using Fourier transform. The characteristics of static defective fabric images were obtained by cross correlation and fast Fourier transform (FFT) techniques. Tsai et al. proposed an approach for the automatic inspection of fabric defects. The proposed approach does not rely on local features of fabric textures. Using the Fourier transformation, they developed a global image restoration scheme. Tong et al. developed an error detection model using optimized Gabor filters. To optimize the parameters of Gabor filters, he uses composite differential evolution. In a system developed to control production on the weaving loom, frequency and direction data obtained from a total of 16 Gabor filter with 4 different angles and scales were calculated and used for fabric control. In addition, histogram techniques are used in a variety of applications due to features such as lower calculation costs.
+
+
+## 3)	Our Approach
+
+Our assignment was to apply quality control methods to 20 linen images. The methods we found useful from literature are Control Charts and Gabor Wavelength Filter Methodology. For both methods, we first turned the images (RGB) to grayscale objects on R with “Luna” method and kept in mind that most of the defects occur in two dimensions; vertical and horizontal (Hanbay, 2016). In other words, what makes linen defective can be found as anomalities of pixel values in vertical or horizontal directions.
+
+```{r setup}
+library(jpeg)
+library(wvtool)
+library(qicharts2)
+library(qcc)
+img1 <- readJPEG("/Users/ayberkakgun/Desktop/Images/Fabric1.jpg")
+grayscaled_image<-(img1[1:512,1:512,1]+img1[1:512,1:512,2]+img1[1:512,1:512,3])/3
+```
+
+#### a)	Row means and Column means 
+
+Despite of being a very simple approach histogram of mean pixel values give a basic idea about the distribution of pixel values. If there is a vertical defect in an image we might expect to see outlier points among the column means vector.
+
+Histogram of column means and row means:
+
+```{r histogram1}
+col_means_gray<-colMeans(grayscaled_image)
+hist(col_means_gray)
+row_means_gray<-rowMeans(grayscaled_image)
+hist(row_means_gray)
+```
+
+Control Charts of column means and row means:
+
+```{r controlchart}
+qic(col_means_gray)
+qic(row_means_gray)
+```
+
+### b)	Gabor Filter
+
+Gabor Filter is a widely used method in computer vision. It helps to detect details in one chosen direction. In our case it will help to detect defects in horizontal and vertical directions. We perform the filter with theta=0 and theta=90:
+
+```{r gaborfilter}
+a<-gabor.filter(grayscaled_image, lamda=1,bw=1,theta=0, disp=TRUE)
+b<-gabor.filter(grayscaled_image, lamda=1,bw=1,theta=90, disp=TRUE)
+gabor_filtered_image_A <- a$filtered_img
+gabor_filtered_image_B <- b$filtered_img
+t2_chart<-mqcc(gabor_filtered_image_A, type = c("T2"), col_means_gray,
+     limits = F, pred.limits = FALSE,
+     confidence.level = 0.95, rules = shewhart.rules,
+     plot = TRUE)
+t2_chart<-mqcc(gabor_filtered_image_B, type = c("T2"), col_means_gray,
+     limits = F, pred.limits = FALSE,
+     confidence.level = 0.95, rules = shewhart.rules,
+     plot = TRUE)
+```
+
+
+```{r xbarchart}
+q2 <- qcc(gabor_filtered_image_A/max(gabor_filtered_image_A), type = "xbar", confidence.level = 0.9)
+```
+
+## 1)	Results: 
+
+It can be seen that there is an abnormality around 239th pixel.
+
+With our method we can clearly see the parts of the images that have defects in control charts. We would expect homogenously distributed pixel values in charts if there were no defects. If we perform the same procedure for all the images, we get the following control charts.
+
+
+## 2)	Conclusions and Future Work
+
+#  Patches
+
+This work can be further developed by dividing the pixel values to patches. Applyying the above mentioned approach to patches would result in more precise results, enables to find the locations of defects exactly and finding defects other than vertical and horizontal directions.
+
+
+# References 
+
+1) Fabric Fault Detection Using Digital Image Processing, Farida S.Nadaf, NayanaP.Kamble, RohiniB.Gadekar, International Journal on Recent and Innovation Trends in Computing and Communication ISSN: 2321-8169 Volume: 5 Issue: 2, 2017
+2) Fabric defect detection systems and methods—A systematic literature review, Kazım Hanbaya,∗, Muhammed Fatih Talub, Ömer Faruk Özgüven, 2016.
